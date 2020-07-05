@@ -10,6 +10,7 @@ MAX_THREAD_SIZE = 1
 DIM = 768
 WORD = 'water'
 TOP_K = 5
+SEARCH_TYPE = CAISS_SEARCH_QUERY
 
 
 def demo():
@@ -24,7 +25,11 @@ def demo():
     if 0 != ret:
         return
 
-    ret, result = caiss.sync_search(handle, WORD, CAISS_SEARCH_WORD, TOP_K, 0)
+    vec_list = []
+    for i in range(0, DIM):
+        vec_list.append(i)
+
+    ret, result = caiss.sync_search(handle, vec_list, SEARCH_TYPE, TOP_K, 0)
     print(result)
 
     caiss.destroy(handle)

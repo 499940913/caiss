@@ -19,6 +19,7 @@
 #define mode_ (CAISS_MODE_PROCESS)
 #define dist_type_ (CAISS_DISTANCE_INNER)
 #define dim_ (768)
+//#define model_path_ ("../../doc/demo_2500words_768dim.caiss")
 #define model_path_ ("../../../models/bert-valid-38550sent-768dim.caiss")
 #define dist_func_ (nullptr)
 #define info_ ("work")

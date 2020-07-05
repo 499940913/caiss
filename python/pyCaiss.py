@@ -45,19 +45,19 @@ class PyCaiss:
         word = create_string_buffer(info.encode(), len(info)+1)
         ret = self._caiss.CAISS_Search(handle, word, search_type, top_k, filter_edit_distance, None, None)
         if 0 != ret:
-            return ''
+            return ret, ''
 
         size = c_int(0)    # 获取结果大小
         ret = self._caiss.CAISS_GetResultSize(handle, byref(size))
         if 0 != ret:
-            return ''
+            return ret, ''
 
         result = create_string_buffer(size.value)
         ret = self._caiss.CAISS_GetResult(handle, result, size)
         if 0 != ret:
-            return ''
+            return ret, ''
 
-        return result.value.decode()
+        return ret, result.value.decode()
 
     def destroy(self, handle):
         return self._caiss.CAISS_DestroyHandle(handle)

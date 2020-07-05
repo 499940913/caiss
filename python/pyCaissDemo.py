@@ -1,7 +1,11 @@
+import json
 from python.pyCaiss import *
 
-LIB_PATH = 'libCaiss.dylib'
-MODEL_PATH = 'bert_71290words_768dim.caiss'
+# LIB_PATH = 'libCaiss.dylib'
+# MODEL_PATH = 'bert_71290words_768dim.caiss'
+
+LIB_PATH = r'/Users/chunel/Documents/code/cpp/caiss/python/libCaiss.dylib'
+MODEL_PATH = r'/Users/chunel/Documents/code/cpp/models/bert_71290words_768dim.caiss'
 MAX_THREAD_SIZE = 1
 DIM = 768
 WORD = 'water'
@@ -20,7 +24,7 @@ def demo():
     if 0 != ret:
         return
 
-    result = caiss.sync_search(handle, WORD, CAISS_SEARCH_WORD, TOP_K, 0)
+    ret, result = caiss.sync_search(handle, WORD, CAISS_SEARCH_WORD, TOP_K, 0)
     print(result)
 
     caiss.destroy(handle)

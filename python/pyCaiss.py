@@ -55,7 +55,7 @@ class PyCaiss:
             vec = (c_float * self._dim)()
             for i in range(0, self._dim):
                 vec[i] = info[i]
-            ret = self._caiss.CAISS_Search(handle, vec, search_type, top_k)
+            ret = self._caiss.CAISS_Search(handle, vec, search_type, top_k, filter_edit_distance, None, None)
         else:
             word = create_string_buffer(info.encode(), len(info)+1)
             ret = self._caiss.CAISS_Search(handle, word, search_type, top_k, filter_edit_distance, None, None)

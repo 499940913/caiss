@@ -64,22 +64,24 @@ class CaissSentenceHandler(tornado.web.RequestHandler):
         res = bert_client.encode(sent_list)
         res_vec = res[0].tolist()
 
-        top_k = self.get_argument('top', '5')
+        top_k = self.get_argument('top', '3')
         ret, result_str = caiss.sync_search(handle, res_vec, CAISS_SEARCH_QUERY, int(top_k), 0)
         if 0 != ret:
             self.write('search failed for the reason of : ' + ret)
             return
 
         result_dict = json.loads(result_str)
-        word_list = list()
+        sent_list = list()
         for info in result_dict['details']:
-            word_list.append(info['label'])
+            sent_list.append(info['label'])
 
-        self.write('the query word is [' + query_sent + '].')
+        self.write('the query sentence is [' + query_sent + '].')
         self.write('<br>')
-        self.write('the word you also want to know maybe : ')
-        self.write(str(word_list))
-        self.write('.<br>')
+        self.write('the info you also want to know maybe : ')
+        self.write('<br>')
+        for i in sent_list:
+            self.write('****' + i)
+            self.write('<br>')
 
 
 def make_app():
@@ -92,14 +94,14 @@ def make_app():
 
 def server_start():
     app = make_app()
-    app.listen(8889)
+    app.listen(8881)
     tornado.ioloop.IOLoop.current().start()
 
 
 def bert_server_start():
     # 感谢哈工大人工智能团队提供的bert服务
     MODEL_PATH = r'/Users/chunel/Documents/code/python/uncased_L-12_H-768_A-12'
-    args = get_args_parser().parse_args(['-num_worker', '1',
+    args = get_args_parser().parse_args(['-num_worker', '2',
                                          '-model_dir', MODEL_PATH,
                                          '-port', '5555',
                                          '-port_out', '5556',

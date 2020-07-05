@@ -142,9 +142,9 @@ CAISS_RET_TYPE HnswProc::train(const char *dataPath, const unsigned int maxDataS
 CAISS_RET_TYPE HnswProc::search(void *info,
                                 const CAISS_SEARCH_TYPE searchType,
                                 const unsigned int topK,
-                                const unsigned int filterEditDistance,
-                                const CAISS_SEARCH_CALLBACK searchCBFunc,
-                                const void *cbParams) {
+                                const unsigned int filterEditDistance = 0,
+                                const CAISS_SEARCH_CALLBACK searchCBFunc = nullptr,
+                                const void *cbParams = nullptr) {
     CAISS_FUNCTION_BEGIN
 
     CAISS_ASSERT_NOT_NULL(info)
@@ -155,6 +155,7 @@ CAISS_RET_TYPE HnswProc::search(void *info,
     this->result_words_.clear();
     this->result_distance_.clear();
     CAISS_BOOL isGet = CAISS_FALSE;
+
     if (isWordSearchType(searchType)) {
         ret = searchInLruCache((const char *)info, searchType, topK, isGet);    // 如果查询的是单词，则先进入cache中获取
         CAISS_FUNCTION_CHECK_STATUS

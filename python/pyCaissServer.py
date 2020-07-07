@@ -94,7 +94,7 @@ def make_app():
 
 def server_start():
     app = make_app()
-    app.listen(8881)
+    app.listen(8888)
     tornado.ioloop.IOLoop.current().start()
 
 
@@ -124,7 +124,7 @@ if __name__ == "__main__":
     caiss = PyCaiss(LIB_PATH, MAX_THREAD_SIZE, CAISS_ALGO_HNSW, CAISS_MANAGE_SYNC)
     handle = c_void_p(0)
     caiss.create_handle(handle)
-    caiss.init(handle, CAISS_MODE_PROCESS, CAISS_DISTANCE_INNER, DIM, SENT_MODEL_PATH)
+    caiss.init(handle, CAISS_MODE_PROCESS, CAISS_DISTANCE_INNER, DIM, WORD_MODEL_PATH)
     print('[caiss] environment init success...')
 
     server_start()    # 开启tornado服务，对外提供能力

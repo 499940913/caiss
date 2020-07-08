@@ -9,7 +9,7 @@
 #include <iomanip>
 #include "HnswProc.h"
 
-#ifdef USE_OPENMP
+#ifdef _USE_OPENMP_
     #include <omp.h>    // 如果有openmp加速
 #endif
 
@@ -665,10 +665,10 @@ CAISS_RET_TYPE HnswProc::checkModelPrecisionEnable(const float targetPrecision, 
     CAISS_ASSERT_NOT_NULL(ptr)
 
     unsigned int suitableTimes = 0;
-    unsigned int calcTimes = min((int)datas.size(), 1000);    // 最多1000次比较
+    unsigned int calcTimes = min((int)datas.size(), 10000);    // 最多1000次比较
 
     {
-        #ifdef USE_OPENMP
+        #ifdef _USE_OPENMP_
             #pragma omp parallel for num_threads(4) reduction(+:suitableTimes)
         #endif
         for (unsigned int i = 0; i < calcTimes; i++) {
@@ -682,7 +682,6 @@ CAISS_RET_TYPE HnswProc::checkModelPrecisionEnable(const float targetPrecision, 
             }
         }
     }
-
 
     calcPrecision = (float)suitableTimes / (float)calcTimes;
     ret = (calcPrecision >= targetPrecision) ? CAISS_RET_OK : CAISS_RET_WARNING;

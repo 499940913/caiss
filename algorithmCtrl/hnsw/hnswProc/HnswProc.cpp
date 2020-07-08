@@ -9,6 +9,10 @@
 #include <iomanip>
 #include "HnswProc.h"
 
+#ifdef USE_OPENMP
+    #include <omp.h>    // 如果有openmp加速
+#endif
+
 using namespace std;
 
 // 静态成员变量使用前，先初始化
@@ -662,16 +666,23 @@ CAISS_RET_TYPE HnswProc::checkModelPrecisionEnable(const float targetPrecision, 
 
     unsigned int suitableTimes = 0;
     unsigned int calcTimes = min((int)datas.size(), 1000);    // 最多1000次比较
-    for (unsigned int i = 0; i < calcTimes; i++) {
-        auto fastResult = ptr->searchKnn((void *)datas[i].node.data(), fastRank);    // 记住，fastResult是倒叙的
-        auto realResult = ptr->forceLoop((void *)datas[i].node.data(), realRank);
-        float fastFarDistance = fastResult.top().first;
-        float realFarDistance = realResult.top().first;
 
-        if (abs(fastFarDistance - realFarDistance) < 0.000002f) {    // 这里近似小于
-            suitableTimes++;
+    {
+        #ifdef USE_OPENMP
+            #pragma omp parallel for num_threads(4) reduction(+:suitableTimes)
+        #endif
+        for (unsigned int i = 0; i < calcTimes; i++) {
+            auto fastResult = ptr->searchKnn((void *)datas[i].node.data(), fastRank);    // 记住，fastResult是倒叙的
+            auto realResult = ptr->forceLoop((void *)datas[i].node.data(), realRank);
+            float fastFarDistance = fastResult.top().first;
+            float realFarDistance = realResult.top().first;
+
+            if (abs(fastFarDistance - realFarDistance) < 0.000002f) {    // 这里近似小于
+                suitableTimes++;
+            }
         }
     }
+
 
     calcPrecision = (float)suitableTimes / (float)calcTimes;
     ret = (calcPrecision >= targetPrecision) ? CAISS_RET_OK : CAISS_RET_WARNING;

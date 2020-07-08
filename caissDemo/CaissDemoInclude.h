@@ -20,16 +20,16 @@
 #define dist_type_ (CAISS_DISTANCE_INNER)
 #define dim_ (768)
 //#define model_path_ ("../../doc/demo_2500words_768dim.caiss")
-#define model_path_ ("../../../models/bert-valid-38550sent-768dim.caiss")
+#define model_path_ ("../../../models/bert_71290words_768dim-omp.caiss")
 #define dist_func_ (nullptr)
 #define info_ ("work")
 #define search_type_ (CAISS_SEARCH_WORD)
 #define top_k_ (5)
 #define filter_edit_distance_ (1)
 
-#define data_path_ ("../../doc/demo_2500words_768dim.txt")
-//#define data_path_ ("../../../models/bert-valid-38550sent-768dim.txt")
-#define max_data_size_ (50000)    // 不小于文本最大行数。建议设定为文本行数的1.5倍~2倍，方便今后插入信息。
+//#define data_path_ ("../../doc/demo_2500words_768dim.txt")
+#define data_path_ ("../../../models/bert_71290words_768dim.txt")
+#define max_data_size_ (100000)    // 不小于文本最大行数。建议设定为文本行数的1.5倍~2倍，方便今后插入信息。
 #define normalize_ (CAISS_TRUE)
 #define max_index_size_ (2048)
 #define precision_ (0.95)

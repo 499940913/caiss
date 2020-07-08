@@ -10,8 +10,8 @@ int main() {
     ret = CAISS_Environment(max_thread_num_, algo_type_, manage_type_);
     CAISS_FUNCTION_CHECK_STATUS
 
-    //ret = demo_train();
-    ret = demo_search();
+    ret = demo_train();
+    //ret = demo_search();
     //ret = demo_insert();
     //ret = demo_asyncMultiThreadSearch();
     //ret = demo_syncMultiThreadSearch();
